@@ -52,6 +52,17 @@ nodejs_setup(){
     VALIDATE $? "Installing Dependencies"
 }
 
+maven_setup(){
+    dnf install maven -y &>>$LOG_FILE # it installs java also
+    VALIDATE $? "Installing Maven and Java"
+
+    mvn clean package &>>$LOG_FILE
+    VALIDATE $? "Packaging the shipping application"
+
+    mv target/shipping-1.0.jar shipping.jar &>>$LOG_FILE
+    VALIDATE $? "Moving and Renaming the Jar file"
+}
+
 systemd_setup(){
     cp $SCRIPT_DIR/$app_name.service /etc/systemd/system/$app_name.service  #At present we're in the app location of the script --> which don't contain $app_name.service so it will fail --> If it have to should work irrelevant of wherever it is present then give "absolute path"
     VALIDATE $? "Copying $app_name service"
