@@ -63,6 +63,17 @@ maven_setup(){
     VALIDATE $? "Moving and Renaming the Jar file"
 }
 
+python_setup(){
+    dnf install python3 gcc python3-devel -y &>>$LOG_FILE
+    VALIDATE $? "Installing Python3 package"
+
+    pip3 install -r requirements.txt &>>$LOG_FILE
+    VALIDATE $? "Installing dependencies"
+
+    cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service &>>$LOG_FILE
+    VALIDATE $? "Copying payment service"
+}
+
 systemd_setup(){
     cp $SCRIPT_DIR/$app_name.service /etc/systemd/system/$app_name.service  #At present we're in the app location of the script --> which don't contain $app_name.service so it will fail --> If it have to should work irrelevant of wherever it is present then give "absolute path"
     VALIDATE $? "Copying $app_name service"
