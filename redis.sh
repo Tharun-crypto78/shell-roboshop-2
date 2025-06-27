@@ -22,4 +22,3 @@ systemctl start redis &>>$LOG_FILE
 VALIDATE $? "Started Redis"
 
 print_time
-print_time
